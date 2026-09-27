@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PAI Memorize XI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#0f1115;color:#f5f7ff;min-height:100vh}
+header{padding:25px;background:#151820;border-bottom:1px solid #292d35}
+header h1{font-size:28px} header p{color:#8993ad;margin-top:7px}
+nav{display:flex;gap:10px;padding:15px 25px;background:#151820;border-bottom:1px solid #292d35;overflow-x:auto}
+nav button{border:1px solid #293552;padding:11px 18px;border-radius:12px;background:#242934;color:#aeb7cc;cursor:pointer}
+nav button.active{background:#fff;color:#0f1115}
+main{max-width:1100px;margin:auto;padding:30px 20px}
+.hero{padding:30px;border-radius:22px;background:linear-gradient(135deg,#1b202b,#111318);border:1px solid #292d35;margin-bottom:25px;box-shadow:0 15px 40px rgba(0,0,0,.25)}
+.hero h2{font-size:34px;margin-bottom:10px}.hero p{color:#9da5b3;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:25px}
+.stat{background:#171a21;border:1px solid #292d35;padding:20px;border-radius:18px}.stat b{font-size:25px}.stat p{color:#858d9b;margin-top:5px}
+.section{display:none}.section.active{display:block}
+.search{width:100%;padding:15px;border-radius:13px;border:1px solid #292d35;background:#11182d;color:white;outline:none;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px}
+.card{background:#171a21;border:1px solid #292d35;border-radius:18px;padding:20px;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:#454b59}
+.card h3{margin-bottom:10px}.card p{color:#a0a8b5;line-height:1.6}
+.badge{display:inline-block;padding:5px 9px;border-radius:8px;background:#292e38;color:#cbd0da;font-size:12px;margin-bottom:12px}
+.flash{text-align:center;padding:40px 20px;min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.flash h2{font-size:30px;margin-bottom:15px}.flash p{max-width:650px;color:#aab1bd;line-height:1.7}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:25px}
+.controls button,.check{padding:12px 18px;border:0;border-radius:11px;background:#fff;color:#0f1115;cursor:pointer;font-weight:bold}
+.quiz-card{margin-bottom:20px}.options{display:grid;gap:10px;margin-top:15px}
+.options label{display:block;padding:12px;border:1px solid #292d35;border-radius:11px;background:#222731;color:#dce2f2;cursor:pointer}
+.options label:hover{background:#303641}
+.result{margin-top:20px;padding:15px;border-radius:12px;background:#222731;border:1px solid #292d35}
+footer{text-align:center;padding:30px;color:#707786}
+@media(max-width:600px){main{padding:20px 15px}.stats{grid-template-columns:1fr}.hero h2{font-size:27px}}
+</style>
+
+<style>
+.materi-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.materi-card{
+  background:#171a21;
+  border:1px solid #292d35;
+  border-radius:14px;
+  overflow:hidden;
+  transition:.2s ease;
+}
+.materi-card:hover{
+  border-color:#3b404b;
+  transform:translateY(-1px);
+}
+.materi-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#f3f4f6;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  text-align:left;
+  cursor:pointer;
+}
+.materi-btn strong{
+  display:block;
+  font-size:15px;
+  margin-bottom:5px;
+}
+.materi-btn small{
+  display:block;
+  color:#8e95a3;
+  font-size:12px;
+  line-height:1.4;
+}
+.arrow{
+  width:28px;
+  height:28px;
+  border:1px solid #343944;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  color:#aeb4c0;
+  font-size:18px;
+  flex:none;
+  transition:.2s;
+}
+.materi-detail{
+  display:none;
+  border-top:1px solid #292d35;
+  padding:17px 18px 18px;
+  color:#b8bec9;
+  font-size:13px;
+  line-height:1.7;
+}
+.materi-detail p{margin:0 0 12px}
+.materi-detail .point{
+  padding:10px 12px;
+  background:#12151b;
+  border:1px solid #252a32;
+  border-radius:9px;
+  color:#cdd2db;
+}
+.materi-card.open .materi-detail{display:block}
+.materi-card.open .arrow{transform:rotate(45deg)}
+@media(max-width:700px){
+  .materi-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="final-theme">
+body{background:#0e0f12;color:#f2f2f2}
+header,nav{background:#141518;border-color:#27282c}
+header p,.hero p,.stat p,.card p,.materi-btn small,.materi-detail{color:#9b9da3}
+nav button{background:#1b1c20;border-color:#303136;color:#b8b9be}
+nav button:hover{background:#24252a}
+nav button.active{background:#f2f2f2;color:#101114;border-color:#f2f2f2}
+.hero{background:#17181c;border-color:#292a2f;box-shadow:none}
+.stat,.card,.materi-card{background:#17181c;border-color:#292a2f}
+.card:hover,.materi-card:hover{border-color:#3b3c42}
+.badge{background:#25262b;color:#c8c9ce}
+.search{background:#17181c;border-color:#292a2f;color:#f2f2f2}
+.options label{background:#1b1c20;border-color:#303136;color:#d7d7da}
+.options label:hover{background:#25262a}
+.controls button,.check{background:#f2f2f2;color:#101114}
+.result{background:#1b1c20;border-color:#303136}
+.materi-btn{color:#f2f2f2}
+.materi-detail{border-color:#292a2f}
+.materi-detail .point{background:#121316;border-color:#292a2f;color:#d0d1d5}
+.arrow{width:auto;height:auto;border:0;background:none;color:#8e9096;font-size:11px;transform:none!important}
+.materi-card.open .arrow{color:#f2f2f2}
+footer{color:#6f7178}
+</style>
+<style id="flash-quiz-fix">.flash-wrap{max-width:760px;margin:0 auto}.flash{min-height:300px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:34px}.flash h2{font-size:24px;line-height:1.45;margin:20px 0}.flash-answer{border-top:1px solid #2a2b30;padding-top:18px;color:#cfd0d4;line-height:1.7;font-size:14px}.flash-controls{justify-content:center;gap:10px;margin-top:14px;display:flex}.flash-controls button{min-width:130px}.quiz-actions{display:flex;gap:10px;margin-top:18px}.check.secondary{background:#1b1c20;color:#f2f2f2;border:1px solid #303136}@media(max-width:600px){.flash{min-height:260px;padding:24px 18px}.flash-controls{flex-wrap:wrap}.flash-controls button{flex:1;min-width:100px}.quiz-actions{flex-wrap:wrap}}</style>
+</head>
+<body>
+<header><h1>PAI Memorize XI</h1><p>Belajar PAI Kelas XI — ringkas, flashcard, dan kuis.</p></header>
+<nav>
+<button class="active" onclick="show('home',this)">Beranda</button>
+<button onclick="show('materi',this)">Materi</button>
+<button onclick="show('flash',this)">Flashcard</button>
+<button onclick="show('quiz',this)">Kuis</button>
+</nav>
+<main>
+<section id="home" class="section active">
+<div class="hero"><h2>PAI Kelas XI</h2><p>Media belajar berdasarkan kisi-kisi Asesmen Sumatif Tengah Semester PAI dan Budi Pekerti Kelas XI Semester Ganjil.</p>
+<div class="stats"><div class="stat"><b>50</b><p>Jumlah soal</p></div><div class="stat"><b>28+</b><p>Topik belajar</p></div><div class="stat"><b>50</b><p>Soal kuis</p></div></div></div>
+<div class="grid">
+<div class="card"><span class="badge">Materi</span><h3>Ringkasan</h3><p>Pelajari topik tafakkur, tabayyun, AI, literasi digital, dan lainnya.</p></div>
+<div class="card"><span class="badge">Flashcard</span><h3>Hafalan Cepat</h3><p>Balik kartu untuk melihat jawaban dan mengingat konsep penting.</p></div>
+<div class="card"><span class="badge">Kuis</span><h3>Uji Pemahaman</h3><p>Latihan soal pilihan ganda dari topik kisi-kisi.</p></div>
+</div></section>
+
+
+<section id="materi" class="section">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">KELAS XI</p>
+      <h2>Materi</h2>
+      <p class="muted">Klik materi untuk membuka penjelasannya.</p>
+    </div>
+    <input id="materiSearch" class="search" type="text" placeholder="Cari materi...">
+  </div>
+
+  <div class="materi-grid" id="materiGrid">
+
+    <article class="materi-card" data-title="Tafakkur">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Tafakkur</strong><small>Pengertian dan makna berpikir mendalam</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Tafakkur</b> adalah kegiatan berpikir dan merenungkan sesuatu secara mendalam. Dalam kisi-kisi, tafakkur dikaitkan dengan memperhatikan tanda-tanda kebesaran Allah dan menggunakan akal untuk mengambil pelajaran.</p>
+        <div class="point"><b>Inti:</b> berpikir mendalam, memperhatikan ciptaan Allah, dan mengambil pelajaran.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="QS Ali Imran 190 191">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>QS Ali 'Imran 3:190–191</strong><small>Tanda-tanda kebesaran Allah</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>QS Ali 'Imran 3:190–191 membahas tanda-tanda kebesaran Allah pada penciptaan langit dan bumi serta pergantian malam dan siang. Ayat ini menjadi dasar pembahasan <b>tafakkur</b> dan <b>tadabbur</b>.</p>
+        <div class="point"><b>Inti:</b> memperhatikan ciptaan Allah dengan pikiran yang sadar dan mengambil pelajaran darinya.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Ulul Albab">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Ulul Albab</strong><small>Orang yang menggunakan akal dan mengambil pelajaran</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Ulul albab</b> merupakan istilah yang dibahas dalam materi QS Ali 'Imran 3:190–191. Pembahasannya menekankan penggunaan akal untuk merenungkan tanda-tanda kebesaran Allah.</p>
+        <div class="point"><b>Inti:</b> menggunakan akal, berpikir, dan mengambil pelajaran dari tanda-tanda kebesaran Allah.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Tadabbur">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Tadabbur</strong><small>Merenungkan dan memahami makna</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Tadabbur</b> dibahas sebagai kegiatan merenungkan dan memahami makna sehingga seseorang dapat mengambil pelajaran dari sesuatu yang dipelajari.</p>
+        <div class="point"><b>Inti:</b> memahami makna dan mengambil pelajaran.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Ilmuwan Muslim">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Ilmuwan Muslim</strong><small>Bidang ilmu dan kontribusinya</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Materi membahas <b>ilmuwan Muslim</b>, bidang ilmu yang mereka tekuni, serta kontribusinya. Kisi-kisi mengarahkan peserta didik untuk mengenali bidang dan kontribusi ilmuwan Muslim.</p>
+        <div class="point"><b>Inti:</b> mengenali ilmuwan Muslim, bidang keilmuan, dan kontribusinya.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Tabayyun">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Tabayyun</strong><small>Memeriksa kebenaran informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Tabayyun</b> adalah sikap memeriksa dan memastikan kebenaran informasi sebelum mempercayai atau menyebarkannya. Dalam konteks digital, tabayyun dilakukan dengan mengecek sumber dan membandingkan informasi.</p>
+        <div class="point"><b>Inti:</b> jangan langsung percaya atau menyebarkan informasi; lakukan pemeriksaan terlebih dahulu.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="QS Al Hujurat 49 6">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>QS Al-Hujurat 49:6</strong><small>Verifikasi informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>QS Al-Hujurat 49:6 menjadi dasar pembahasan <b>verifikasi informasi</b>. Kisi-kisi mengaitkannya dengan sikap tabayyun, terutama ketika menerima informasi dari suatu pihak.</p>
+        <div class="point"><b>Inti:</b> periksa informasi terlebih dahulu agar tidak salah mengambil tindakan.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="QS Al Isra 17 36">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>QS Al-Isra' 17:36</strong><small>Tanggung jawab terhadap informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>QS Al-Isra' 17:36 dibahas dalam kaitannya dengan <b>tanggung jawab terhadap informasi</b> dan larangan mengikuti sesuatu yang tidak memiliki pengetahuan yang jelas.</p>
+        <div class="point"><b>Inti:</b> informasi perlu diperlakukan secara bertanggung jawab dan tidak asal diikuti.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Hadis Menuntut Ilmu">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Hadis tentang Menuntut Ilmu</strong><small>Kewajiban mencari ilmu</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Kisi-kisi mencantumkan hadis tentang <b>kewajiban menuntut ilmu</b> dan mengingatkan agar berhati-hati dalam menyampaikan informasi. Materi juga dikaitkan dengan sikap tidak menyampaikan semua hal yang didengar begitu saja.</p>
+        <div class="point"><b>Inti:</b> mencari ilmu dan berhati-hati ketika menyampaikan informasi.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Taklid Buta">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Taklid Buta</strong><small>Menerima tanpa pemeriksaan</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Taklid buta</b> dibahas sebagai sikap menerima atau mengikuti sesuatu tanpa pemeriksaan dan pertimbangan yang memadai. Materi ini berhubungan dengan pentingnya berpikir kritis.</p>
+        <div class="point"><b>Inti:</b> tidak menerima informasi secara membabi buta.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Amanah Ilmiah">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Amanah Ilmiah</strong><small>Tanggung jawab dalam ilmu dan informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Amanah ilmiah</b> berkaitan dengan tanggung jawab dalam menggunakan dan menyampaikan ilmu serta informasi. Dalam kisi-kisi, konsep ini juga dikaitkan dengan penggunaan AI dan dunia kerja.</p>
+        <div class="point"><b>Inti:</b> menggunakan ilmu dan informasi secara bertanggung jawab.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Adab Bermedia Sosial">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Adab Bermedia Sosial</strong><small>Etika saat menggunakan media sosial</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Adab bermedia sosial dalam kisi-kisi berkaitan dengan <b>tabayyun sebelum membagikan informasi</b>, menjaga tanggung jawab dalam berkomunikasi, dan menggunakan teknologi secara bijak.</p>
+        <div class="point"><b>Inti:</b> cek informasi, berpikir sebelum membagikan, dan bertanggung jawab dalam penggunaan media sosial.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Etika Penggunaan AI">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Etika Penggunaan AI</strong><small>Bijak dan kritis terhadap output AI</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Dalam kisi-kisi, penggunaan AI perlu dilakukan secara <b>bijak dan kritis</b>. Output AI tidak langsung dianggap benar, terutama ketika berkaitan dengan dalil atau informasi yang perlu diverifikasi.</p>
+        <div class="point"><b>Inti:</b> gunakan AI dengan tanggung jawab dan tetap melakukan verifikasi.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Tabayyun Digital">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Tabayyun Digital</strong><small>Cek sumber dan bandingkan informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Tabayyun digital</b> adalah penerapan tabayyun pada informasi di lingkungan digital. Langkah yang ditekankan dalam kisi-kisi adalah memeriksa sumber dan melakukan perbandingan informasi.</p>
+        <div class="point"><b>Inti:</b> cek sumber, bandingkan informasi, lalu tentukan tindakan secara bertanggung jawab.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Hoaks">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Hoaks</strong><small>Informasi yang perlu diverifikasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Hoaks dibahas bersama tabayyun dan literasi digital. Ketika menemukan informasi yang meragukan, langkah yang sesuai adalah melakukan pemeriksaan dan tidak terburu-buru menyebarkannya.</p>
+        <div class="point"><b>Inti:</b> hadapi informasi meragukan dengan verifikasi, bukan langsung menyebarkannya.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Literasi Digital">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Literasi Digital</strong><small>Kemampuan memahami dan menggunakan informasi digital</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Literasi digital dalam kisi-kisi dikaitkan dengan kemampuan menghadapi informasi digital secara kritis, etika penggunaan teknologi, dan budaya sekolah.</p>
+        <div class="point"><b>Inti:</b> menggunakan informasi dan teknologi secara cerdas, kritis, dan bertanggung jawab.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Berpikir Kritis">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Berpikir Kritis</strong><small>Menilai informasi sebelum menerima kesimpulan</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Berpikir kritis muncul dalam kisi-kisi saat membahas informasi digital dan AI. Sikap ini berarti tidak menerima informasi begitu saja, tetapi mempertimbangkan sumber, bukti, dan konteks.</p>
+        <div class="point"><b>Inti:</b> periksa informasi sebelum membuat atau menerima kesimpulan.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Etika IPTEK">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Etika IPTEK</strong><small>Tujuan, manfaat, risiko, dan tanggung jawab</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Kisi-kisi membahas prinsip etika IPTEK dengan memperhatikan <b>tujuan, manfaat, risiko, dan tanggung jawab</b>. IPTEK diarahkan untuk memberikan kemaslahatan dan perlu disertai mitigasi risiko.</p>
+        <div class="point"><b>Inti:</b> pertimbangkan manfaat, risiko, tujuan, dan tanggung jawab dalam penggunaan teknologi.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Etika Kerja Digital">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Etika Kerja Digital</strong><small>Tanggung jawab dalam lingkungan kerja berbasis teknologi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Etika kerja digital dikaitkan dengan tanggung jawab, amanah, dan penggunaan teknologi secara tepat dalam dunia kerja.</p>
+        <div class="point"><b>Inti:</b> tetap amanah dan bertanggung jawab ketika bekerja menggunakan teknologi digital.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Ilmu dan Amal">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Ilmu dan Amal</strong><small>Ilmu yang diterapkan dalam tindakan</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Kisi-kisi menghubungkan <b>ilmu dan amal</b>. Artinya, pembelajaran tidak berhenti pada pengetahuan, tetapi berkaitan dengan penerapan dan tanggung jawab dalam tindakan.</p>
+        <div class="point"><b>Inti:</b> ilmu memiliki hubungan dengan penerapan dan tindakan yang bertanggung jawab.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Algoritma Verifikasi">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Algoritma Verifikasi</strong><small>Langkah sistematis untuk memeriksa informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Dalam kisi-kisi, algoritma digunakan untuk membantu proses verifikasi. Algoritma berarti langkah-langkah yang tersusun secara sistematis untuk menyelesaikan suatu proses.</p>
+        <div class="point"><b>Inti:</b> buat langkah pemeriksaan yang teratur, misalnya cek sumber lalu bandingkan informasi.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Dekomposisi">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Dekomposisi</strong><small>Memecah masalah menjadi bagian lebih kecil</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Dekomposisi</b> merupakan bagian dari berpikir komputasional yang muncul dalam kisi-kisi. Konsepnya adalah memecah masalah yang kompleks menjadi bagian-bagian yang lebih kecil agar lebih mudah ditangani.</p>
+        <div class="point"><b>Inti:</b> pecah masalah besar menjadi beberapa bagian.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Pattern Recognition">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Pattern Recognition</strong><small>Mengenali pola dari informasi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p><b>Pattern Recognition</b> atau pengenalan pola adalah kemampuan menemukan pola atau kesamaan dari informasi. Dalam kisi-kisi, konsep ini dikaitkan dengan berpikir komputasional.</p>
+        <div class="point"><b>Inti:</b> cari pola atau kesamaan yang dapat membantu menyelesaikan masalah.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Data dan Privasi">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Etika Data dan Privasi</strong><small>Menjaga data saat menggunakan teknologi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Kisi-kisi membahas etika data dan privasi sebagai bagian dari literasi serta etika teknologi. Penggunaan data perlu memperhatikan tanggung jawab dan risiko.</p>
+        <div class="point"><b>Inti:</b> perlakukan data secara bertanggung jawab dan perhatikan privasi.</div>
+      </div>
+    </article>
+
+    <article class="materi-card" data-title="Mitigasi Risiko Teknologi">
+      <button class="materi-btn" onclick="toggleMateri(this)">
+        <span><strong>Mitigasi Risiko Teknologi</strong><small>Mengurangi risiko dari penggunaan teknologi</small></span>
+        <span class="arrow">Buka</span>
+      </button>
+      <div class="materi-detail">
+        <p>Mitigasi risiko teknologi dibahas sebagai bagian dari etika IPTEK. Penggunaan teknologi perlu mempertimbangkan risiko dan langkah untuk menguranginya.</p>
+        <div class="point"><b>Inti:</b> kenali risiko dan siapkan langkah untuk menguranginya.</div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+<section id="flash" class="section"><div class="flash-wrap"><div class="card flash" id="flashCard"><span class="badge" id="fnum"></span><h2 id="fq"></h2><div class="flash-answer" id="fa" style="display:none"></div></div><div class="controls flash-controls"><button onclick="prev()">Sebelumnya</button><button onclick="answer()">Lihat Jawaban</button><button onclick="next()">Berikutnya</button></div></div></section>
+
+<section id="quiz" class="section"><h2 style="margin-bottom:6px">Kuis PAI XI</h2><p style="color:#9b9da3;margin-bottom:20px">50 soal pilihan ganda</p><div id="quizBox"></div><div class="quiz-actions"><button class="check" onclick="check()">Cek Jawaban</button><button class="check secondary" onclick="resetQuiz()">Ulangi Kuis</button></div><div id="result"></div></section>
+</main>
+<footer>PAI Memorize XI  Belajar santai, paham materi.</footer>
+
+<script>
+const materials=[
+["Tafakkur","Memahami pengertian tafakkur."],
+["QS Ali 'Imran 3:190–191","Tafakkur dan tadabbur serta pesan tentang tanda-tanda kebesaran Allah."],
+["Ulul Albab","Memahami pengertian ulul albab."],
+["Tadabbur","Memahami pengertian tadabbur."],
+["Ilmuwan Muslim","Mengenal bidang dan kontribusi ilmuwan Muslim."],
+["QS Al-Hujurat 49:6","Pentingnya memeriksa informasi sebelum mempercayai atau menyebarkannya."],
+["QS Al-Isra 17:36","Tanggung jawab terhadap informasi dan larangan mengikuti sesuatu tanpa pengetahuan."],
+["Hadis Menuntut Ilmu","Memahami hadis tentang kewajiban mencari ilmu."],
+["Taklid Buta","Memahami taklid buta dan pentingnya sikap ilmiah."],
+["Amanah Ilmiah","Tanggung jawab dalam memperoleh, menggunakan, dan menyampaikan ilmu."],
+["Adab Bermedia Sosial","Etika penggunaan media sosial dan tabayyun sebelum membagikan informasi."],
+["Etika Penggunaan AI","Menggunakan AI secara bijak dan kritis serta memeriksa hasilnya."],
+["Tabayyun Digital","Memeriksa sumber dan membandingkan informasi."],
+["IPTEK dan Kemaslahatan","Hubungan IPTEK dengan kemaslahatan."],
+["Ilmu dan Amal","Hubungan ilmu dengan penerapannya dalam kehidupan."],
+["Hoaks","Memahami informasi palsu atau menyesatkan dan cara menghadapinya."],
+["Etika Kerja Digital","Etika dalam dunia kerja berbasis teknologi digital."],
+["Literasi Digital","Kemampuan menggunakan informasi dan teknologi secara kritis dan bertanggung jawab."],
+["Berpikir Kritis","Menganalisis informasi sebelum menerima atau menyebarkannya."],
+["Etika IPTEK","Tujuan, manfaat, risiko, dan tanggung jawab penggunaan IPTEK."],
+["Verifikasi Informasi","Mengecek sumber dan membandingkan informasi untuk mengetahui validitasnya."],
+["AI dan Verifikasi Dalil","Hasil AI tetap perlu diverifikasi ketika berkaitan dengan dalil."],
+["Algoritma Verifikasi","Langkah sistematis untuk memeriksa kebenaran informasi."],
+["Pattern Recognition","Mengenali pola dalam informasi atau masalah."],
+["Dekomposisi","Memecah masalah kompleks menjadi bagian lebih sederhana."],
+["Algoritma","Langkah-langkah sistematis untuk menyelesaikan masalah."],
+["Etika Data dan Privasi","Menjaga data dan privasi dalam penggunaan teknologi."],
+["Literasi Data","Memahami dan menggunakan data secara tepat dan bertanggung jawab."],
+["Mitigasi Risiko Teknologi","Memahami risiko teknologi dan cara menguranginya."]
+];
+const flash=[
+["Apa itu tafakkur?","Tafakkur adalah merenungkan dan memikirkan sesuatu secara mendalam, termasuk memperhatikan tanda-tanda kebesaran Allah."],
+["Apa yang dibahas QS Ali 'Imran 3:190–191?","Tanda-tanda kebesaran Allah pada penciptaan langit dan bumi serta pergantian malam dan siang, yang mendorong tafakkur."],
+["Apa yang dimaksud ulul albab?","Istilah untuk orang yang menggunakan akalnya dan mengambil pelajaran dari tanda-tanda kebesaran Allah."],
+["Apa itu tadabbur?","Merenungkan dan memahami makna sehingga dapat mengambil pelajaran dari sesuatu yang dipelajari."],
+["Apa yang dipelajari dari ilmuwan Muslim?","Bidang ilmu yang ditekuni serta kontribusi mereka dalam perkembangan keilmuan."],
+["Apa itu tabayyun?","Memeriksa dan memastikan kebenaran informasi sebelum mempercayai atau menyebarkannya."],
+["Apa pesan QS Al-Hujurat 49:6?","Informasi perlu diperiksa terlebih dahulu agar tidak salah dalam mengambil tindakan."],
+["Apa pesan QS Al-Isra' 17:36?","Jangan mengikuti sesuatu yang tidak memiliki pengetahuan atau dasar yang jelas dan bertanggung jawab terhadap informasi."],
+["Apa itu amanah ilmiah?","Tanggung jawab dalam memperoleh, menggunakan, dan menyampaikan ilmu serta informasi."],
+["Apa itu taklid buta?","Mengikuti atau menerima sesuatu tanpa pemeriksaan dan pertimbangan yang memadai."],
+["Apa salah satu adab bermedia sosial?","Melakukan tabayyun sebelum membagikan informasi dan bertanggung jawab dalam berkomunikasi."],
+["Bagaimana penggunaan AI yang etis?","Menggunakannya secara bijak dan kritis serta tetap memeriksa hasilnya."],
+["Apa yang dilakukan jika AI memberikan dalil?","Jangan langsung menganggap benar; lakukan verifikasi terhadap sumber dan isi dalil."],
+["Apa itu tabayyun digital?","Penerapan tabayyun pada informasi digital dengan memeriksa sumber dan membandingkan informasi."],
+["Apa itu hoaks?","Informasi palsu atau menyesatkan yang disampaikan seolah-olah benar."],
+["Apa itu literasi digital?","Kemampuan menggunakan informasi dan teknologi secara kritis dan bertanggung jawab."],
+["Apa itu berpikir kritis?","Kemampuan menganalisis dan menilai informasi sebelum menerima atau menyebarkannya."],
+["Apa yang perlu dipertimbangkan dalam etika IPTEK?","Tujuan, manfaat, risiko, dan tanggung jawab dalam penggunaan teknologi."],
+["Apa itu etika kerja digital?","Sikap bertanggung jawab dan amanah ketika menggunakan teknologi dalam dunia kerja."],
+["Apa hubungan ilmu dan amal?","Ilmu berkaitan dengan penerapan dan tindakan yang bertanggung jawab dalam kehidupan."],
+["Apa itu algoritma verifikasi?","Langkah-langkah yang tersusun secara sistematis untuk memeriksa kebenaran informasi."],
+["Apa itu dekomposisi?","Memecah masalah yang kompleks menjadi beberapa bagian yang lebih kecil."],
+["Apa itu pattern recognition?","Mengenali pola atau kesamaan dalam informasi atau suatu masalah."],
+["Apa yang dimaksud etika data dan privasi?","Menggunakan dan menjaga data secara bertanggung jawab serta memperhatikan privasi."],
+["Apa itu mitigasi risiko teknologi?","Mengenali risiko teknologi dan melakukan langkah untuk mengurangi atau mengendalikannya."]
+];
+const quiz=[
+["Tafakkur berarti...",["Merenungkan dan memikirkan secara mendalam","Menyebarkan informasi","Menghafal tanpa memahami","Mengikuti pendapat orang"],0],
+["QS Ali 'Imran 3:190–191 mengajak manusia memperhatikan...",["Tanda-tanda kebesaran Allah","Perdagangan semata","Permainan","Sejarah kerajaan"],0],
+["Istilah yang berkaitan dengan orang yang menggunakan akalnya secara mendalam adalah...",["Ulul albab","Taklid","Hoaks","Futur"],0],
+["Tadabbur berkaitan dengan kegiatan...",["Merenungkan dan memahami makna secara mendalam","Menyebarkan berita cepat","Menghafal tanpa memahami","Mengabaikan informasi"],0],
+["Materi ilmuwan Muslim membahas tentang...",["Bidang dan kontribusi keilmuan","Teknik bermain olahraga","Perdagangan modern saja","Desain grafis saja"],0],
+["Sikap memeriksa informasi sebelum mempercayai atau menyebarkannya disebut...",["Tabayyun","Taklid","Tadabbur","Futur"],0],
+["QS Al-Hujurat ayat 6 menekankan pentingnya...",["Memeriksa informasi","Menyebarkan berita secepatnya","Mengikuti semua kabar","Mengabaikan sumber"],0],
+["QS Al-Isra ayat 36 mengajarkan agar seseorang tidak...",["Mengikuti sesuatu tanpa pengetahuan","Mencari ilmu","Memeriksa informasi","Bertanggung jawab"],0],
+["Sikap bertanggung jawab dalam memperoleh dan menyampaikan ilmu disebut...",["Amanah ilmiah","Hoaks","Taklid buta","Pattern recognition"],0],
+["Taklid buta berarti...",["Mengikuti pendapat tanpa dasar atau pemahaman yang memadai","Memeriksa sumber informasi","Menganalisis data","Membandingkan sumber"],0],
+["Salah satu adab bermedia sosial adalah...",["Memeriksa informasi sebelum membagikannya","Menyebarkan semua berita","Mengabaikan sumber","Mengikuti tren tanpa berpikir"],0],
+["Penggunaan AI yang sesuai dengan materi kisi-kisi perlu dilakukan secara...",["Bijak dan kritis","Mutlak tanpa pemeriksaan","Tanpa tanggung jawab","Tanpa verifikasi"],0],
+["Jika AI memberikan informasi tentang dalil, tindakan yang tepat adalah...",["Melakukan verifikasi","Langsung menyebarkannya","Menganggap pasti benar","Menghapus semua sumber"],0],
+["Tabayyun digital dapat dilakukan dengan cara...",["Memeriksa sumber dan membandingkan informasi","Meneruskan pesan tanpa membaca","Percaya pada judul saja","Mengabaikan sumber"],0],
+["Tujuan verifikasi informasi adalah...",["Memastikan validitas informasi","Mempercepat penyebaran hoaks","Menghindari semua teknologi","Menghapus data"],0],
+["Informasi palsu atau menyesatkan yang disampaikan seolah benar disebut...",["Hoaks","Tabayyun","Tafakkur","Dekomposisi"],0],
+["Literasi digital berkaitan dengan kemampuan...",["Menggunakan informasi dan teknologi secara kritis dan bertanggung jawab","Menyebarkan semua informasi","Mengabaikan keamanan data","Mengikuti semua tren"],0],
+["Berpikir kritis dalam menghadapi informasi berarti...",["Menganalisis informasi sebelum menerimanya","Menerima semua informasi","Menyebarkan informasi tanpa cek","Menolak semua teknologi"],0],
+["Etika IPTEK perlu mempertimbangkan...",["Tujuan, manfaat, risiko, dan tanggung jawab","Kecepatan saja","Popularitas saja","Jumlah pengguna saja"],0],
+["Etika kerja digital berkaitan dengan...",["Sikap bertanggung jawab dalam penggunaan teknologi di dunia kerja","Penggunaan teknologi tanpa aturan","Penyebaran data pribadi","Mengabaikan keamanan"],0],
+["Ilmu yang dimiliki seharusnya berkaitan dengan...",["Amal atau penerapan dalam kehidupan","Penyimpanan tanpa penerapan","Penyebaran hoaks","Pengabaian tanggung jawab"],0],
+["Salah satu cara menghadapi hoaks adalah...",["Memeriksa sumber dan membandingkan informasi","Meneruskannya segera","Percaya pada judul","Mengabaikan fakta"],0],
+["Amanah dalam dunia kerja berarti...",["Melaksanakan tanggung jawab dengan benar","Menghindari tanggung jawab","Menyalahgunakan data","Mengabaikan tugas"],0],
+["Dalam menerima informasi digital, sumber informasi perlu...",["Diperiksa kredibilitasnya","Diabaikan","Disembunyikan","Diganti tanpa alasan"],0],
+["Membandingkan informasi dari beberapa sumber membantu...",["Menilai validitas informasi","Membuat hoaks","Menghilangkan semua data","Menghindari proses berpikir"],0],
+["Algoritma verifikasi adalah...",["Langkah sistematis untuk memeriksa informasi","Berita yang belum diperiksa","Kumpulan hoaks","Pendapat pribadi"],0],
+["Dekomposisi dalam computational thinking berarti...",["Memecah masalah menjadi bagian lebih kecil","Menyatukan semua masalah","Menghapus masalah","Mengabaikan masalah"],0],
+["Pattern Recognition berarti...",["Mengenali pola dalam suatu masalah atau informasi","Memecah masalah","Menyusun langkah","Menghapus data"],0],
+["Algoritma dalam computational thinking berarti...",["Langkah-langkah sistematis untuk menyelesaikan masalah","Pola informasi","Data pribadi","Berita palsu"],0],
+["Jika sebuah informasi belum memiliki sumber yang jelas, tindakan yang tepat adalah...",["Melakukan pengecekan lebih lanjut","Langsung menyebarkan","Menganggap benar","Menambahkan informasi baru"],0],
+["Etika data dan privasi penting karena...",["Data perlu digunakan dan dijaga secara bertanggung jawab","Semua data boleh disebarkan","Privasi tidak penting","Data tidak memiliki risiko"],0],
+["Literasi data membantu seseorang...",["Memahami dan menggunakan data secara tepat","Menyebarkan data tanpa pemeriksaan","Menghapus semua data","Mengabaikan angka"],0],
+["Jika mendapat pesan yang meragukan di media sosial, langkah awal yang sesuai adalah...",["Memeriksa sumber dan kebenarannya","Meneruskan ke semua teman","Mengubah isinya","Menganggap benar"],0],
+["Mengikuti sesuatu tanpa pengetahuan yang benar bertentangan dengan pesan...",["QS Al-Isra 17:36","QS Al-Fatihah 1:1","QS Al-Kafirun 109:1","QS Al-Ikhlas 112:1"],0],
+["Ayat yang menjadi rujukan materi tabayyun dalam kisi-kisi adalah...",["QS Al-Hujurat 49:6","QS Al-Maidah 5:3","QS Al-Falaq 113:1","QS An-Nas 114:1"],0],
+["QS Ali 'Imran 3:190–191 berkaitan dengan materi...",["Tafakkur dan tanda-tanda kebesaran Allah","Etika kerja digital","Algoritma verifikasi","Privasi data"],0],
+["Sikap kritis terhadap hasil AI berarti...",["Tidak langsung menerima hasil AI tanpa pemeriksaan","Menganggap semua hasil AI pasti benar","Menolak semua teknologi","Menyebarkan semua hasil AI"],0],
+["Dalam konteks pembelajaran, AI sebaiknya digunakan sebagai...",["Alat bantu yang tetap perlu digunakan secara bertanggung jawab","Sumber yang selalu benar","Pengganti seluruh proses berpikir","Alasan untuk tidak belajar"],0],
+["Jika dua sumber memberikan informasi berbeda, langkah yang sesuai dengan tabayyun adalah...",["Membandingkan sumber dan mencari informasi yang lebih valid","Memilih yang paling viral","Menyebarkan keduanya tanpa pemeriksaan","Menghapus keduanya"],0],
+["Prinsip etika AI yang sesuai dengan materi adalah...",["Verifikasi dan tanggung jawab","Kepercayaan mutlak","Penyebaran tanpa cek","Pengabaian sumber"],0],
+["Mitigasi risiko teknologi berarti...",["Mengurangi atau mengendalikan risiko yang mungkin muncul","Menambah risiko","Mengabaikan risiko","Menyebarkan risiko"],0],
+["Tanggung jawab terhadap informasi berarti...",["Berhati-hati sebelum menerima dan menyebarkan informasi","Menyebarkan semua pesan","Mengikuti informasi tanpa sumber","Mengabaikan akibat"],0],
+["Ilmu dan amal memiliki hubungan karena...",["Ilmu dapat diterapkan dalam perbuatan","Ilmu tidak perlu diterapkan","Amal tidak membutuhkan pengetahuan","Pengetahuan harus diabaikan"],0],
+["Dalam dunia digital, menjaga privasi berarti...",["Tidak sembarangan membagikan data pribadi","Membagikan semua data","Mengunggah data orang lain","Menyebarkan kata sandi"],0],
+["Informasi yang berasal dari sumber tidak jelas sebaiknya...",["Diverifikasi sebelum dipercaya atau dibagikan","Langsung diteruskan","Dianggap benar","Dijadikan fakta"],0],
+["Computational thinking dapat membantu masalah tabayyun melalui...",["Dekomposisi, pengenalan pola, dan algoritma","Penyebaran hoaks","Penghapusan sumber","Pengabaian data"],0],
+["Amanah ilmiah dalam penggunaan AI dapat ditunjukkan dengan...",["Memeriksa dan bertanggung jawab atas informasi yang digunakan","Menyalin semua hasil tanpa cek","Menganggap AI selalu benar","Menghilangkan sumber"],0],
+["Tujuan literasi dan budaya sekolah dalam konteks digital adalah...",["Membangun kebiasaan menggunakan informasi secara kritis dan bertanggung jawab","Menyebarkan semua berita","Menghindari semua teknologi","Mengabaikan sumber"],0],
+["Ketika menggunakan teknologi untuk menyelesaikan masalah, langkah yang sistematis disebut...",["Algoritma","Hoaks","Taklid","Tadabbur"],0],
+["Kesimpulan yang tepat dari materi tabayyun digital adalah...",["Informasi perlu diperiksa sebelum dipercaya dan disebarkan","Semua informasi internet pasti benar","Informasi viral pasti valid","AI selalu benar"],0]
+];
+
+function show(id,b){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function renderMaterials(){const search=document.getElementById("materiSearch");const q=search?search.value.toLowerCase().trim():"";const box=document.getElementById("materials");if(!box)return;box.innerHTML=materials.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(q)).map((x,i)=>`<div class="card"><span class="badge">Materi ${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></div>`).join("")}
+let fi=0;
+function renderFlash(){document.getElementById("fnum").textContent=`Flashcard ${fi+1}/${flash.length}`;document.getElementById("fq").textContent=flash[fi][0];document.getElementById("fa").textContent=flash[fi][1];document.getElementById("fa").style.display="none"}
+function answer(){document.getElementById("fa").style.display="block"}
+function prev(){fi=(fi-1+flash.length)%flash.length;renderFlash()}
+function next(){fi=(fi+1)%flash.length;renderFlash()}
+function renderQuiz(){document.getElementById("quizBox").innerHTML=quiz.slice(0,50).map((x,i)=>`<div class="card quiz-card"><span class="badge">Soal ${i+1}</span><h3>${x[0]}</h3><div class="options">${x[1].map((a,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${a}</label>`).join("")}</div></div>`).join("")}
+function check(){let score=0;quiz.slice(0,50).forEach((x,i)=>{let s=document.querySelector(`input[name=q${i}]:checked`);if(s&&+s.value===x[2])score++});document.getElementById("result").innerHTML=`<div class="result"><h3>Hasil: ${score}/50</h3><p>${score===50?"Mantap, semua benar.":"Pelajari lagi materi yang masih salah ya."}</p></div>`}
+function resetQuiz(){document.querySelectorAll('#quizBox input[type="radio"]').forEach(x=>x.checked=false);document.getElementById("result").innerHTML=""}
+renderMaterials();renderFlash();renderQuiz();
+</script>
+
+<script>
+function toggleMateri(button){
+  const card = button.closest('.materi-card');
+  card.classList.toggle('open');
+}
+
+const materiSearch = document.getElementById('materiSearch');
+if (materiSearch) {
+  materiSearch.addEventListener('input', function(){
+    const keyword = this.value.toLowerCase().trim();
+    document.querySelectorAll('.materi-card').forEach(card => {
+      const title = (card.dataset.title || '').toLowerCase();
+      const content = card.innerText.toLowerCase();
+      card.style.display = (!keyword || title.includes(keyword) || content.includes(keyword)) ? '' : 'none';
+    });
+  });
+}
+</script>
+
+</body>
+</html>
