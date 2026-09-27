@@ -136,6 +136,17 @@ nav button.active{background:#f2f2f2;color:#101114;border-color:#f2f2f2}
 footer{color:#6f7178}
 </style>
 <style id="flash-quiz-fix">.flash-wrap{max-width:760px;margin:0 auto}.flash{min-height:300px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:34px}.flash h2{font-size:24px;line-height:1.45;margin:20px 0}.flash-answer{border-top:1px solid #2a2b30;padding-top:18px;color:#cfd0d4;line-height:1.7;font-size:14px}.flash-controls{justify-content:center;gap:10px;margin-top:14px;display:flex}.flash-controls button{min-width:130px}.quiz-actions{display:flex;gap:10px;margin-top:18px}.check.secondary{background:#1b1c20;color:#f2f2f2;border:1px solid #303136}@media(max-width:600px){.flash{min-height:260px;padding:24px 18px}.flash-controls{flex-wrap:wrap}.flash-controls button{flex:1;min-width:100px}.quiz-actions{flex-wrap:wrap}}</style>
+
+<style id="quiz-marking">
+.quiz-card{transition:.2s ease}
+.quiz-card.quiz-correct{border-color:#3f8f63}
+.quiz-card.quiz-wrong{border-color:#9b4b4b}
+.options label.option-correct{background:#193526!important;border-color:#3f8f63!important;color:#dff7e8!important}
+.options label.option-wrong{background:#3b2020!important;border-color:#9b4b4b!important;color:#ffdede!important}
+.answer-status{margin-top:12px;font-size:13px;font-weight:700;line-height:1.5}
+.correct-text{color:#70d394}
+.wrong-text{color:#ff8585}
+</style>
 </head>
 <body>
 <header><h1>PAI Memorize XI</h1><p>Belajar PAI Kelas XI — ringkas, flashcard, dan kuis.</p></header>
@@ -572,9 +583,50 @@ function renderFlash(){document.getElementById("fnum").textContent=`Flashcard ${
 function answer(){document.getElementById("fa").style.display="block"}
 function prev(){fi=(fi-1+flash.length)%flash.length;renderFlash()}
 function next(){fi=(fi+1)%flash.length;renderFlash()}
-function renderQuiz(){document.getElementById("quizBox").innerHTML=quiz.slice(0,50).map((x,i)=>`<div class="card quiz-card"><span class="badge">Soal ${i+1}</span><h3>${x[0]}</h3><div class="options">${x[1].map((a,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${a}</label>`).join("")}</div></div>`).join("")}
-function check(){let score=0;quiz.slice(0,50).forEach((x,i)=>{let s=document.querySelector(`input[name=q${i}]:checked`);if(s&&+s.value===x[2])score++});document.getElementById("result").innerHTML=`<div class="result"><h3>Hasil: ${score}/50</h3><p>${score===50?"Mantap, semua benar.":"Pelajari lagi materi yang masih salah ya."}</p></div>`}
-function resetQuiz(){document.querySelectorAll('#quizBox input[type="radio"]').forEach(x=>x.checked=false);document.getElementById("result").innerHTML=""}
+let renderedQuiz=[];
+function shuffleQuestion(x){
+  const items=x[1].map((text,index)=>({text,index}));
+  for(let i=items.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [items[i],items[j]]=[items[j],items[i]];
+  }
+  return {question:x[0], options:items.map(v=>v.text), correct:items.findIndex(v=>v.index===x[2])};
+}
+function renderQuiz(){
+  renderedQuiz=quiz.slice(0,50).map(shuffleQuestion);
+  document.getElementById("quizBox").innerHTML=renderedQuiz.map((x,i)=>`<div class="card quiz-card" id="qcard${i}"><span class="badge">Soal ${i+1}</span><h3>${x.question}</h3><div class="options">${x.options.map((a,j)=>`<label id="opt${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${a}</label>`).join("")}</div><div class="answer-status" id="status${i}"></div></div>`).join("");
+}
+function check(){
+  let score=0;
+  renderedQuiz.forEach((x,i)=>{
+    const card=document.getElementById(`qcard${i}`);
+    const status=document.getElementById(`status${i}`);
+    const selected=document.querySelector(`input[name=q${i}]:checked`);
+    const correct=x.correct;
+    card.classList.remove("quiz-correct","quiz-wrong");
+    document.querySelectorAll(`input[name=q${i}]`).forEach((input,j)=>{
+      const label=document.getElementById(`opt${i}_${j}`);
+      label.classList.remove("option-correct","option-wrong");
+      if(j===correct) label.classList.add("option-correct");
+    });
+    if(selected && +selected.value===correct){
+      score++;
+      card.classList.add("quiz-correct");
+      status.textContent="✓ Benar";
+      status.className="answer-status correct-text";
+    }else{
+      card.classList.add("quiz-wrong");
+      if(selected) document.getElementById(`opt${i}_${selected.value}`).classList.add("option-wrong");
+      status.textContent=selected ? `✗ Salah — jawaban benar: ${x.options[correct]}` : `✗ Belum dijawab — jawaban benar: ${x.options[correct]}`;
+      status.className="answer-status wrong-text";
+    }
+  });
+  document.getElementById("result").innerHTML=`<div class="result"><h3>Hasil: ${score}/50</h3><p>${score===50?"Mantap, semua benar.":"Jawaban benar ditandai hijau, jawaban yang salah ditandai merah."}</p></div>`;
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById("result").innerHTML="";
+}
 renderMaterials();renderFlash();renderQuiz();
 </script>
 
