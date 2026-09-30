@@ -191,6 +191,7 @@ footer{color:#6f7178}
   <button class="subject-btn" onclick="switchSubject('bing',this)">B. Inggris</button>
   <button class="subject-btn" onclick="switchSubject('kik',this)">KIK</button>
   <button class="subject-btn" onclick="switchSubject('sejarah',this)">Sejarah</button>
+  <button class="subject-btn" onclick="switchSubject('matematika',this)">Matematika</button>
   <button class="subject-btn" onclick="switchSubject('dkv',this)">DKV</button>
   <button class="subject-btn" onclick="switchSubject('pplg',this)">PPLG</button>
 </div>
@@ -740,6 +741,36 @@ footer{color:#6f7178}
   </div><div id="sejarahResult"></div>
 </section>
 
+
+<section id="matematika-home" class="section">
+  <div class="hero">
+    <div class="subject-label">MATEMATIKA • KELAS XI</div>
+    <div class="subject-title">Matematika</div>
+    <p class="subject-desc">Materi berdasarkan kisi-kisi asesmen: fungsi kuadrat, fungsi komposisi, dan fungsi invers.</p>
+    <div class="stats"><div class="stat"><b>24</b><p>Topik materi</p></div><div class="stat"><b>20</b><p>Flashcard</p></div><div class="stat"><b>50</b><p>Soal latihan</p></div></div>
+  </div>
+  <div class="grid">
+    <div class="card"><span class="badge">Fungsi Kuadrat</span><h3>Akar, Grafik & Model</h3><p>Akar persamaan, titik potong, titik puncak, sumbu simetri, nilai maksimum/minimum, dan masalah kontekstual.</p></div>
+    <div class="card"><span class="badge">Fungsi Komposisi</span><h3>Komposisi Fungsi</h3><p>Menentukan rumus dan nilai komposisi dua atau tiga fungsi serta masalah kontekstual.</p></div>
+    <div class="card"><span class="badge">Fungsi Invers</span><h3>Invers & Penerapan</h3><p>Menentukan fungsi invers, invers komposisi, dan penerapannya pada kehidupan sehari-hari.</p></div>
+  </div>
+</section>
+<section id="matematika-materi" class="section">
+  <div class="subject-section-head"><h2>Materi Matematika</h2><p>Ringkasan materi sesuai kisi-kisi yang diberikan.</p><input id="matematikaSearch" class="search" type="text" placeholder="Cari materi..."></div>
+  <div id="matematikaMaterialBox"></div>
+</section>
+<section id="matematika-flash" class="section">
+  <div class="subject-section-head"><h2>Flashcard Matematika</h2><p>Balik kartu untuk melihat jawabannya.</p></div>
+  <div class="flash-card"><div id="matematikaFnum" class="badge"></div><h2 id="matematikaFq"></h2><p id="matematikaFa"></p>
+  <div class="flash-actions"><button onclick="matematikaAnswer()">Lihat Jawaban</button><button onclick="matematikaPrev()">←</button><button onclick="matematikaNext()">→</button></div></div>
+</section>
+<section id="matematika-quiz" class="section">
+  <div class="subject-section-head"><h2>Kuis Matematika</h2><p>50 soal latihan dari materi fungsi kuadrat, komposisi, dan invers.</p></div>
+  <div id="matematikaQuizBox"></div>
+  <div class="quiz-actions"><button class="check" onclick="matematikaCheck()">Cek Jawaban</button><button class="check secondary" onclick="matematikaReset()">Ulangi Kuis</button></div>
+  <div id="matematikaResult"></div>
+</section>
+
 <section id="dkv-home" class="section">
   <div class="hero"><div class="subject-label">DKV • MULOK</div><div class="subject-title">Digital Marketing</div>
   <p class="subject-desc">Materi DKV dengan fokus personal branding, logo, brand guidelines, brand application, TikTok, Instagram, Facebook, dan branding lintas platform.</p>
@@ -767,7 +798,7 @@ footer{color:#6f7178}
 </section>
 <section id="dkv-mkk-materi" class="section"><div class="category-tabs"><button class="active" onclick="openDkvTab('mkk','materi')">Materi</button><button onclick="openDkvTab('mkk','flash')">Flashcard</button><button onclick="openDkvTab('mkk','quiz')">Kuis</button></div><div class="subject-section-head"><h2>Materi MKK</h2><p>Ringkasan berdasarkan slide MKK yang dikirim.</p><input id="mkkSearch" class="search" type="text" placeholder="Cari materi MKK..."></div><div class="subject-list" id="mkkMaterialBox"></div></section>
 <section id="dkv-mkk-flash" class="section"><div class="category-tabs"><button onclick="openDkvTab('mkk','materi')">Materi</button><button class="active" onclick="openDkvTab('mkk','flash')">Flashcard</button><button onclick="openDkvTab('mkk','quiz')">Kuis</button></div><div class="subject-flash"><div class="card"><span class="badge" id="mkkFnum"></span><h2 id="mkkFq"></h2><div class="subject-flash-answer" id="mkkFa" style="display:none"></div></div><div class="subject-actions"><button onclick="mkkPrev()">Sebelumnya</button><button onclick="mkkAnswer()">Lihat Jawaban</button><button onclick="mkkNext()">Berikutnya</button></div></div></section>
-<section id="dkv-mkk-quiz" class="section"><div class="category-tabs"><button onclick="openDkvTab('mkk','materi')">Materi</button><button onclick="openDkvTab('mkk','flash')">Flashcard</button><button class="active" onclick="openDkvTab('mkk','quiz')">Kuis</button></div><h2 style="margin-bottom:6px">Kuis MKK</h2><p style="color:#9b9da3;margin-bottom:20px">30 soal latihan Branding Basics, Brand Anatomy, dan Brand Strategy.</p><div id="mkkQuizBox"></div><div class="quiz-actions"><button class="check" onclick="mkkCheck()">Cek Jawaban</button><button class="check secondary" onclick="mkkReset()">Ulangi Kuis</button></div><div id="mkkResult"></div></section>
+<section id="dkv-mkk-quiz" class="section"><div class="category-tabs"><button onclick="openDkvTab('mkk','materi')">Materi</button><button onclick="openDkvTab('mkk','flash')">Flashcard</button><button class="active" onclick="openDkvTab('mkk','quiz')">Kuis</button></div><h2 style="margin-bottom:6px">Kuis MKK</h2><p style="color:#9b9da3;margin-bottom:20px">50 soal latihan Branding Basics, Brand Anatomy, dan Brand Strategy.</p><div id="mkkQuizBox"></div><div class="quiz-actions"><button class="check" onclick="mkkCheck()">Cek Jawaban</button><button class="check secondary" onclick="mkkReset()">Ulangi Kuis</button></div><div id="mkkResult"></div></section>
 
 <section id="dkv-mpp1-home" class="section">
   <div class="hero"><div class="subject-label">MPP1 • DKV</div><div class="subject-title">Artificial Intelligence</div>
@@ -929,8 +960,9 @@ function switchSubject(subject,btn){
     pjok:["Memorize XI","Belajar PJOK Kelas XI — voli, atletik, basket, dan sepak bola."],
     bing:["B. Inggris Memorize XI","Belajar Bahasa Inggris Kelas XI — opinion, grammar, reading, vocabulary, dan kuis."],
     kik:["KIK Memorize XI","Belajar KIK — Projek Kreatif dan Kewirausahaan: talent mapping dan design thinking."],
-    sejarah:["Sejarah Memorize XI","Belajar Sejarah Kelas XI — konsep sejarah, manusia-ruang-waktu, sinkronik, diakronik, dan penelitian sejarah."]
-    ,dkv:["DKV Memorize XI","Digital Marketing DKV — Mulok, MKK, dan MPP1 dalam satu menu."]
+    sejarah:["Sejarah Memorize XI","Belajar Sejarah Kelas XI — konsep sejarah, manusia-ruang-waktu, sinkronik, diakronik, dan penelitian sejarah."],
+    matematika:["Matematika Memorize XI","Belajar Matematika Kelas XI — fungsi kuadrat, fungsi komposisi, dan fungsi invers."],
+    dkv:["DKV Memorize XI","Digital Marketing DKV — Mulok, MKK, dan MPP1 dalam satu menu."]
     ,pplg:["PPLG Memorize XI","Basis Data dan Pemrograman Perangkat Bergerak — ERD, kardinalitas, Jetpack Compose, state, navigasi, form, callback, dan validasi."]
   };
   document.getElementById("siteTitle").textContent=titles[subject][0];
@@ -1552,7 +1584,27 @@ const MKK_QUIZ = [
 ["Brand sebagai system of meaning berarti...",["Brand terbentuk dari tanda, pengalaman, dan interpretasi yang menghasilkan makna","Brand hanya berupa logo","Brand hanya berupa warna","Brand tidak memiliki makna"],0],
 ["Yang termasuk semiotic toolbox pada materi adalah...",["Typography, colour, image & style","Database, query, table","ERD, state, callback","Harga, stok, gudang"],0],
 ["Naming adalah proses...",["Menentukan nama brand atau penawaran","Membuat database","Mencetak poster","Mengatur password"],0],
-["Mengapa brand perlu memiliki pembeda?",["Agar dapat diperhatikan dan dikenali di tengah banyak pilihan","Agar sulit diingat","Agar semua brand terlihat sama","Agar pesan tidak jelas"],0]
+["Mengapa brand perlu memiliki pembeda?",["Agar dapat diperhatikan dan dikenali di tengah banyak pilihan","Agar sulit diingat","Agar semua brand terlihat sama","Agar pesan tidak jelas"],0],
+["Manakah yang termasuk dimensi Brand Personality Jennifer Aaker?",["Excitement","Packaging","Distribution","Deadline"],0],
+["Logo yang baik menurut materi seharusnya...",["Distinctive, simple, flexible, legible, precise, dan memorable","Rumit dan sulit dibaca","Selalu berubah setiap hari","Menggunakan sebanyak mungkin elemen"],0],
+["Sensory branding memanfaatkan...",["Pengalaman indra untuk memperkuat brand","Harga produk saja","Struktur organisasi saja","Data penjualan saja"],0],
+["Manakah yang termasuk indra dalam sensory branding?",["Sight, sound, smell, taste, dan touch","Code, data, server, dan cloud","Price, place, profit, dan product","Logo, slogan, deadline, dan budget"],0],
+["Sonic branding berfokus pada...",["Suara atau elemen audio sebagai identitas brand","Bentuk kemasan saja","Warna logo saja","Harga produk"],0],
+["Fungsi brand architecture adalah...",["Mengatur hubungan dan struktur antara brand utama, sub-brand, dan produk","Menentukan ukuran file desain","Menghitung keuntungan","Membuat jadwal produksi"],0],
+["Brand extension berarti...",["Memperluas brand ke penawaran atau produk lain","Menghapus identitas brand","Mengganti semua konsumen","Mengurangi komunikasi brand"],0],
+["Internal branding terutama berkaitan dengan...",["Pemahaman dan perilaku pihak internal organisasi","Persepsi pihak luar saja","Harga produk","Jenis kamera"],0],
+["External branding terutama berhubungan dengan...",["Persepsi pihak luar terhadap brand","Aturan kerja internal saja","Struktur database","Jadwal produksi"],0],
+["Brand promise adalah...",["Janji atau nilai yang ditawarkan brand kepada konsumen","Nama perusahaan","Jenis logo","Warna utama brand"],0],
+["Brand philosophy dan values berfungsi sebagai...",["Dasar keyakinan serta nilai yang ingin dibawa brand","Daftar harga produk","Teknik fotografi","Ukuran logo"],0],
+["Perbedaan brand personality dan tone of voice adalah...",["Personality memberi karakter manusia pada brand, tone of voice mengatur gaya bahasa komunikasi","Keduanya hanya jenis logo","Personality adalah harga, tone of voice adalah produk","Keduanya adalah teknik mencetak"],0],
+["Brand identity adalah...",["Kumpulan elemen yang sengaja dibentuk untuk menampilkan dan membedakan identitas brand","Kumpulan harga produk","Jumlah konsumen","Sistem pembayaran"],0],
+["Brand strategy membahas...",["Posisi, makna, pembeda, dan arah komunikasi brand","Ukuran kertas cetak","Cara memperbaiki komputer","Jadwal libur"],0],
+["Manakah yang dapat membantu menarik perhatian secara visual menurut materi?",["Colour, shapes, symbols, dan words","Deadline, budget, dan password","Database dan server","Printer dan scanner"],0],
+["Visual noise terjadi ketika...",["Terlalu banyak informasi visual bersaing sehingga pesan utama sulit diperhatikan","Desain memiliki satu elemen utama","Logo mudah dikenali","Pesan dibuat sederhana"],0],
+["USP merupakan singkatan dari...",["Unique Selling Point","Universal Style Pattern","User System Process","Unique Social Platform"],0],
+["ESP dalam materi berkaitan dengan...",["Emotional Selling Proposition","External Social Product","Effective Style Program","Electronic Sales Platform"],0],
+["Semiotics mempelajari...",["Bagaimana tanda, simbol, warna, bentuk, dan elemen visual menyampaikan makna","Cara menghitung laba","Teknik membuat database","Cara mengatur jadwal"],0],
+["Yang termasuk elemen pada semiotic toolbox dalam materi adalah...",["Typography, colour, image & style","Database, server, dan coding","Budget, deadline, dan invoice","Keyboard, mouse, dan monitor"],0]
 ];
 
 let mkkFi=0,mkkRendered=[];
@@ -1565,6 +1617,23 @@ function mkkCheck(){checkExtraQuiz(mkkRendered,"mkk","mkkResult")}
 function mkkReset(){renderExtraQuiz(MKK_QUIZ,"mkkQuizBox","mkk",mkkRendered);document.getElementById("mkkResult").innerHTML=""}
 renderMkkMaterials();renderMkkFlash();renderExtraQuiz(MKK_QUIZ,"mkkQuizBox","mkk",mkkRendered);
 document.getElementById("mkkSearch")?.addEventListener("input",renderMkkMaterials);
+</script>
+
+
+<script>
+const MATEMATIKA_MATERIALS=[["Persamaan Kuadrat", "Menentukan akar-akar persamaan kuadrat dengan pemfaktoran."], ["Jumlah dan Hasil Kali Akar", "Menggunakan rumus jumlah akar −b/a dan hasil kali akar c/a."], ["Rumus ABC", "Menentukan akar persamaan kuadrat dengan rumus kuadrat."], ["Titik Potong Sumbu X", "Menentukan titik potong dengan mencari f(x)=0."], ["Titik Potong Sumbu Y", "Titik potong sumbu Y diperoleh saat x=0."], ["Titik Puncak", "Koordinat titik puncak dapat dicari dari x=−b/(2a) lalu y=f(x)."], ["Sumbu Simetri", "Persamaan sumbu simetri grafik kuadrat adalah x=−b/(2a)."], ["Nilai Maksimum/Minimum", "Jika a<0 fungsi memiliki maksimum; jika a>0 fungsi memiliki minimum."], ["Arah Bukaan Grafik", "a>0 membuka ke atas dan a<0 membuka ke bawah."], ["Menyusun Fungsi dari Akar", "Jika akar r1 dan r2 diketahui, bentuknya f(x)=a(x−r1)(x−r2)."], ["Menyusun Fungsi dari Titik Puncak", "Gunakan bentuk f(x)=a(x−h)^2+k jika puncak (h,k) diketahui."], ["Model Lintasan Objek", "Masalah lintasan dalam gim dapat dimodelkan dengan fungsi kuadrat untuk mencari tinggi maksimum atau waktu."], ["Model Pendapatan", "Pendapatan aplikasi dapat dimodelkan dengan fungsi kuadrat dan dianalisis nilai maksimumnya."], ["Model Luas Area", "Luas area permainan dapat dimodelkan dengan fungsi kuadrat sesuai batasan soal."], ["Fungsi Komposisi", "Komposisi (f∘g)(x)=f(g(x))."], ["Komposisi Tiga Fungsi", "Untuk tiga fungsi, misalnya (f∘g∘h)(x)=f(g(h(x)))."], ["Menentukan Fungsi yang Hilang", "Jika komposisi dan salah satu fungsi diketahui, fungsi lainnya dapat ditentukan dengan substitusi/aljabar."], ["Fungsi Invers Linear", "Tukar x dan y pada persamaan fungsi lalu selesaikan untuk y."], ["Fungsi Invers Rasional", "Tukar x dan y, kemudian susun kembali persamaan untuk mendapatkan invers."], ["Nilai Fungsi Invers", "f⁻¹(a) adalah nilai input yang menghasilkan a pada fungsi f."], ["Menentukan Fungsi dari Invers", "Jika f⁻¹ diketahui, inversi kembali dapat digunakan untuk memperoleh f."], ["Invers Komposisi", "(f∘g)⁻¹ = g⁻¹∘f⁻¹."], ["Komposisi dalam Kehidupan", "Diskon, voucher, kurs, pajak, dan penghasilan dapat dimodelkan dengan komposisi fungsi."], ["Invers dalam Kehidupan", "Konversi suhu, kurs mata uang, dan dekripsi pada aplikasi dapat menggunakan fungsi invers."]];
+const MATEMATIKA_FLASH=[["Bagaimana akar persamaan kuadrat dapat dicari dengan pemfaktoran?", "Ubah persamaan menjadi bentuk faktor, lalu setiap faktor disamakan dengan nol."], ["Apa rumus jumlah akar persamaan ax²+bx+c=0?", "x₁+x₂=−b/a."], ["Apa rumus hasil kali akar?", "x₁x₂=c/a."], ["Apa rumus ABC?", "x=(−b±√(b²−4ac))/(2a)."], ["Bagaimana titik potong sumbu Y dicari?", "Substitusikan x=0 sehingga titiknya (0,c)."], ["Bagaimana sumbu simetri fungsi kuadrat dicari?", "x=−b/(2a)."], ["Kapan grafik kuadrat membuka ke atas?", "Saat a>0."], ["Kapan grafik kuadrat memiliki nilai maksimum?", "Saat a<0."], ["Bentuk fungsi kuadrat dari titik puncak (h,k)?", "f(x)=a(x−h)²+k."], ["Bentuk fungsi kuadrat dari dua akar r₁ dan r₂?", "f(x)=a(x−r₁)(x−r₂)."], ["Apa yang dimaksud fungsi komposisi?", "Fungsi yang diperoleh dengan memasukkan hasil satu fungsi ke fungsi lainnya."], ["Rumus (f∘g)(x)?", "f(g(x))."], ["Bagaimana komposisi tiga fungsi ditulis?", "(f∘g∘h)(x)=f(g(h(x)))."], ["Bagaimana mencari invers fungsi linear?", "Tulis y=f(x), tukar x dan y, lalu selesaikan untuk y."], ["Apa hubungan invers dengan fungsi asal?", "f(f⁻¹(x))=x dan f⁻¹(f(x))=x pada domain/range yang sesuai."], ["Rumus invers komposisi?", "(f∘g)⁻¹=g⁻¹∘f⁻¹."], ["Apa arti f⁻¹(a)?", "Nilai input yang menghasilkan a pada fungsi f."], ["Contoh komposisi dalam kehidupan sehari-hari?", "Diskon lalu voucher, atau kurs lalu pajak."], ["Contoh fungsi invers dalam aplikasi?", "Dekripsi nilai yang sebelumnya diproses oleh fungsi tertentu."], ["Tingkat kesulitan pada kisi-kisi ini memakai apa?", "C2 memahami, C3 menerapkan, dan C4 menganalisis."]];
+const MATEMATIKA_QUIZ=[["Akar-akar dari x²−5x+6=0 adalah ...", ["1 dan 6", "2 dan 3", "−2 dan −3", "3 dan 5"], 1], ["Akar-akar dari x²+x−6=0 adalah ...", ["2 dan −3", "3 dan −2", "−2 dan −3", "1 dan −6"], 1], ["Untuk 2x²−7x+3=0, jumlah dan hasil kali akar berturut-turut adalah ...", ["−7/2 dan 3/2", "7/2 dan 3/2", "7 dan 3", "−7 dan 3/2"], 1], ["Akar persamaan x²−4x+1=0 dengan rumus ABC adalah ...", ["2±√3", "−2±√3", "4±√3", "2±3"], 0], ["Titik potong grafik y=x²−5x+6 dengan sumbu X adalah ...", ["(2,0) dan (3,0)", "(−2,0) dan (−3,0)", "(0,2) dan (0,3)", "(1,0) dan (6,0)"], 0], ["Titik puncak y=x²−6x+5 adalah ...", ["(3,−4)", "(−3,4)", "(3,4)", "(−3,−4)"], 0], ["Sumbu simetri y=−2x²+8x−3 adalah ...", ["x=−2", "x=2", "x=4", "x=−4"], 1], ["Grafik y=−x²+4x−3 memiliki ciri ...", ["membuka ke atas dan minimum 1", "membuka ke bawah dan maksimum 1", "membuka ke bawah dan maksimum 3", "membuka ke atas dan maksimum 1"], 1], ["Fungsi kuadrat yang memiliki akar 2 dan 5 serta melalui titik (0,10) adalah ...", ["x²−7x+10", "2x²−14x+20", "−x²+7x−10", "2x²+14x+20"], 0], ["Fungsi kuadrat dengan titik puncak (2,−3) dan melalui (0,5) adalah ...", ["2x²−8x+5", "2x²+8x+5", "x²−4x+5", "−2x²+8x−3"], 0], ["Fungsi kuadrat dengan titik puncak (1,−4) dan melalui (3,4) adalah ...", ["2(x−1)²−4", "(x−1)²−4", "−2(x−1)²−4", "2(x+1)²−4"], 0], ["Fungsi kuadrat berakar −1 dan 3 serta melalui (0,−6) adalah ...", ["2x²−4x−6", "−2x²+4x+6", "x²−2x−3", "2x²+4x−6"], 0], ["Lintasan objek gim mengikuti h(t)=−t²+6t+7. Tinggi maksimum objek adalah ...", ["7", "12", "16", "18"], 2], ["Pendapatan aplikasi dimodelkan R(x)=−2x²+40x+100. Nilai maksimum R adalah ...", ["200", "300", "400", "500"], 1], ["Luas area permainan dimodelkan L(x)=−x²+12x+5. Nilai maksimum L adalah ...", ["36", "41", "48", "77"], 1], ["Jika f(x)=2x+3 dan g(x)=x−4, maka (f∘g)(x)= ...", ["2x−5", "2x+7", "x−1", "2x−1"], 0], ["Jika f(x)=x² dan g(x)=x+1, maka (f∘g)(2)= ...", ["4", "6", "9", "12"], 2], ["Jika f(g(x))=3x+7 dan g(x)=x−2, maka f(x)= ...", ["3x+1", "3x+13", "3x−6", "x+13"], 1], ["Jika f(x)=2x+1 dan (g∘f)(x)=4x+5, maka g(x)= ...", ["2x+3", "2x−3", "4x+3", "4x−1"], 0], ["Invers dari f(x)=3x−6 adalah ...", ["(x−6)/3", "(x+6)/3", "3x+6", "3x−6"], 1], ["Invers dari f(x)=(2x+1)/(x−3) adalah ...", ["(3x+1)/(x−2)", "(3x+1)/(x+2)", "(2x+1)/(x−3)", "(x−3)/(2x+1)"], 0], ["Jika f(x)=4x−8, maka f⁻¹(12)= ...", ["1", "4", "5", "20"], 2], ["Jika f⁻¹(x)=5x+2, maka f(x)= ...", ["(x−2)/5", "(x+2)/5", "5x−2", "5x+2"], 0], ["Jika f(x)=2x+1 dan g(x)=x−3, maka (f∘g)⁻¹(x)= ...", ["(x+5)/2", "(x−5)/2", "2x−5", "2x+5"], 0], ["Jika f(x)=x+4, g(x)=2x, dan h(x)=x−1, maka (f∘g∘h)(3)= ...", ["4", "6", "8", "10"], 2], ["Sebuah harga p diproses diskon 20% lalu voucher potongan Rp10.000. Jika harga awal Rp100.000, hasil akhirnya ...", ["Rp70.000", "Rp75.000", "Rp80.000", "Rp90.000"], 0], ["Kurs rupiah ke suatu mata uang dinyatakan f(x)=x/15. Pajak setelah konversi dinyatakan g(x)=1,1x. Untuk Rp300.000, hasil g(f(x)) adalah ...", ["Rp20.000", "Rp22.000", "Rp33.000", "Rp330.000"], 2], ["Suhu Celsius ke Fahrenheit: f(C)=9C/5+32. Jika Fahrenheit 86°F, suhu Celsiusnya ...", ["20°C", "25°C", "30°C", "35°C"], 1], ["Sebuah aplikasi mengenkripsi PIN dengan f(x)=2x+5. Jika hasil enkripsi 25, nilai PIN awal adalah ...", ["5", "10", "12", "15"], 1], ["Jika f(x)=x+2 dan g(x)=3x−1, maka (g∘f)(x)= ...", ["3x+1", "3x+5", "x+5", "3x−1"], 0], ["Jika f(x)=x²+1 dan g(x)=2x, maka (f∘g)(x)= ...", ["2x²+1", "4x²+1", "x²+2", "4x+1"], 1], ["Jika f(g(x))=2x−1 dan g(x)=x+3, maka f(x)= ...", ["2x−7", "2x+5", "2x−1", "x−7"], 0], ["Jika f(x)=x−2 dan (g∘f)(x)=5x+1, maka g(x)= ...", ["5x−9", "5x+11", "5x−1", "x+11"], 1], ["Invers dari f(x)=5x+10 adalah ...", ["(x+10)/5", "(x−10)/5", "5x−10", "5x+10"], 1], ["Invers dari f(x)=(x+2)/(x−1) adalah ...", ["(x+2)/(x−1)", "(x+2)/(x−1)", "(x−2)/(x+1)", "(x+1)/(x−2)"], 3], ["Invers dari f(x)=(x+2)/(x−1) adalah ...", ["(x+2)/(x−1)", "(x+1)/(x−1)", "(x+1)/(x−2)", "(x−2)/(x+1)"], 2], ["Jika f⁻¹(x)=3x−4, maka f(x)= ...", ["(x+4)/3", "(x−4)/3", "3x+4", "3x−4"], 0], ["Jika f(x)=x+1 dan g(x)=2x−3, maka (f∘g)⁻¹(x)= ...", ["(x+2)/2", "(x−2)/2", "2x−2", "2x+2"], 0], ["Jika f(x)=3x dan g(x)=x+2, maka (f∘g)(4)= ...", ["12", "14", "18", "20"], 2], ["Sebuah barang berharga x diberi diskon 10% lalu voucher Rp5.000. Untuk x=Rp50.000, harga akhir ...", ["Rp40.000", "Rp45.000", "Rp50.000", "Rp55.000"], 1], ["Jika pendapatan setelah proses dinyatakan g(f(x)), dengan f(x)=2x+10 dan g(x)=x−5, maka untuk x=20 hasilnya ...", ["35", "40", "45", "50"], 0], ["Jika nilai dolar dikonversi ke rupiah dengan f(x)=16000x, maka invers f⁻¹(320000)= ...", ["10", "20", "32", "50"], 1], ["Jika sebuah kode diproses oleh f(x)=3x−2 dan hasilnya 28, kode awal adalah ...", ["8", "9", "10", "12"], 1], ["Untuk f(x)=x²−4x+3, nilai f(2) adalah ...", ["−1", "0", "1", "3"], 1], ["Diskriminan persamaan x²−6x+9=0 adalah ...", ["−9", "0", "9", "36"], 1], ["Nilai minimum y=x²−4x+7 adalah ...", ["2", "3", "4", "7"], 1], ["Jika f(x)=−x²+8x−12, nilai maksimum fungsi adalah ...", ["2", "4", "8", "12"], 1], ["Akar-akar 2x²+5x−3=0 adalah ...", ["1/2 dan −3", "−1/2 dan 3", "3/2 dan −1", "−3/2 dan 1"], 0], ["Jika f(x)=x+5 dan g(x)=2x−1, maka (g∘f)(3)= ...", ["13", "15", "17", "19"], 2], ["Jika f(x)=x²−2x+1, nilai f(3) adalah ...", ["2", "3", "4", "6"], 2]];
+let matematikaFi=0,matematikaRendered=[];
+function renderMatematikaMaterials(){renderSimpleSubjectMaterials(MATEMATIKA_MATERIALS,"matematikaMaterialBox","matematikaSearch")}
+function renderMatematikaFlash(){renderSimpleFlash(MATEMATIKA_FLASH,matematikaFi,"matematika")}
+function matematikaAnswer(){document.getElementById("matematikaFa").style.display="block"}
+function matematikaPrev(){matematikaFi=(matematikaFi-1+MATEMATIKA_FLASH.length)%MATEMATIKA_FLASH.length;renderMatematikaFlash()}
+function matematikaNext(){matematikaFi=(matematikaFi+1)%MATEMATIKA_FLASH.length;renderMatematikaFlash()}
+function matematikaCheck(){checkExtraQuiz(matematikaRendered,"matematika","matematikaResult")}
+function matematikaReset(){renderExtraQuiz(MATEMATIKA_QUIZ,"matematikaQuizBox","matematika",matematikaRendered);document.getElementById("matematikaResult").innerHTML=""}
+renderMatematikaMaterials();renderMatematikaFlash();renderExtraQuiz(MATEMATIKA_QUIZ,"matematikaQuizBox","matematika",matematikaRendered);
+document.getElementById("matematikaSearch")?.addEventListener("input",renderMatematikaMaterials);
 </script>
 
 </body>
